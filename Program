@@ -1,0 +1,360 @@
+using System;
+using System.Collections.Generic;
+
+namespace Jogo___Projeto
+{
+
+    class Program
+    {
+        static void programStart()
+        {
+            string title = @"
+    ██████╗  █████╗ ████████╗ █████╗ ██╗     ██╗  ██╗ █████╗             ███╗   ██╗ █████╗ ██╗   ██╗ █████╗ ██╗     
+    ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║     ██║  ██║██╔══██╗            ████╗  ██║██╔══██╗██║   ██║██╔══██╗██║     
+    ██████╔╝███████║   ██║   ███████║██║     ███████║███████║            ██╔██╗ ██║███████║██║   ██║███████║██║     
+    ██╔══██╗██╔══██║   ██║   ██╔══██║██║     ██╔══██║██╔══██║            ██║╚██╗██║██╔══██║╚██╗ ██╔╝██╔══██║██║     
+    ██████╔╝██║  ██║   ██║   ██║  ██║███████╗██║  ██║██║  ██║            ██║ ╚████║██║  ██║ ╚████╔╝ ██║  ██║███████╗
+    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝            ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝
+                                                                                                                
+";
+            string ship = @"
+                                                    )___(
+                                            _______/__/_
+                                    ___     /===========|   ___
+                    ____       __   [\\\]___/____________|__[///]   __
+                    \   \_____[\\]__/___________________________\__[//]___
+                    \40A                                                 |
+                    \                                                  /
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+            string submarine =
+                @"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                                                     o o
+                                                                     o ooo
+                                                                       o oo
+                                                                          o o      |   #)
+                                                                           oo     _|_|_#_    
+                                                                             o   |       |
+                                        __                    ___________________|       |_________________
+                                       |   -_______-----------                                              \
+                                      >|    _____                                                   --->     )
+                                       |__ -     ---------_________________________________________________ /";
+            Console.WriteLine(title);
+            Console.WriteLine("\n");
+            Console.WriteLine(ship);
+            Console.WriteLine(submarine);
+            Console.ReadKey();
+        }
+        static void title()
+        {
+            Console.Clear();
+            Console.Write(@"
+██████╗  █████╗ ████████╗ █████╗ ██╗     ██╗  ██╗ █████╗             ███╗   ██╗ █████╗ ██╗   ██╗ █████╗ ██╗     
+██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║     ██║  ██║██╔══██╗            ████╗  ██║██╔══██╗██║   ██║██╔══██╗██║     
+██████╔╝███████║   ██║   ███████║██║     ███████║███████║            ██╔██╗ ██║███████║██║   ██║███████║██║     
+██╔══██╗██╔══██║   ██║   ██╔══██║██║     ██╔══██║██╔══██║            ██║╚██╗██║██╔══██║╚██╗ ██╔╝██╔══██║██║     
+██████╔╝██║  ██║   ██║   ██║  ██║███████╗██║  ██║██║  ██║            ██║ ╚████║██║  ██║ ╚████╔╝ ██║  ██║███████╗
+╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝            ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝
+                                                                                                                
+");
+        }
+
+        static void hit()
+        {
+            Console.Clear();
+            Console.WriteLine(@"
+            ██████╗ ██╗██████╗ ███████╗ ██████╗████████╗    ██╗  ██╗██╗████████╗██╗
+            ██╔══██╗██║██╔══██╗██╔════╝██╔════╝╚══██╔══╝    ██║  ██║██║╚══██╔══╝██║
+            ██║  ██║██║██████╔╝█████╗  ██║        ██║       ███████║██║   ██║   ██║
+            ██║  ██║██║██╔══██╗██╔══╝  ██║        ██║       ██╔══██║██║   ██║   ╚═╝
+            ██████╔╝██║██║  ██║███████╗╚██████╗   ██║       ██║  ██║██║   ██║   ██╗
+            ╚═════╝ ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝   ╚═╝       ╚═╝  ╚═╝╚═╝   ╚═╝   ╚═╝
+                                                                       
+            ");
+            Console.Write(@" 
+                                    --_--
+                                 (  -_    _).
+                               ( ~       )   )
+                             (( )  (    )  ()  )
+                              (.   )) (       )
+                                ``..     ..``
+                                     | |
+                                   (=| |=)
+                                     | |         
+                                 (../( )\.))");
+            Console.Write(@"  |__
+                                     |\/
+                                     ---
+                                     / | [
+                              !      | |||
+                            _/|     _/|-++'
+                        +  +--|    |--|--|_ |-
+                     { /|__|  |/\__|  |--- |||__/
+                    +---------------___[}-_===_.'____               /\
+                ____`-' ||___-{]_| _[}-  |     |_[___\==--          \/   _
+ __..._____--==/___]_|__|_____________________________[___\==--___,-----' .7
+|                                                                   BB-61/
+ \_______________________________________________________________________|");
+            Console.ReadKey();
+        }
+        static void Main(string[] args)
+        {
+            programStart();
+            string opcao;
+            do
+            {
+                int[,] userMap = new int[10, 10];
+                int[,] cpuMap = new int[10, 10];
+                title();
+                Console.WriteLine("Main Menu");
+                Console.WriteLine("\n1 - New Game");
+                Console.WriteLine("2 - Continue Game");
+                Console.WriteLine("3 - Load Save Game");
+                Console.WriteLine("4 - LeaderBoard");
+                Console.WriteLine("5 - End Game");
+                Console.WriteLine("Please Select an option ");
+                opcao = Console.ReadLine();
+                switch (opcao)
+                {
+                    default:
+                        Console.Clear();
+                        break;
+                    case "1":
+                        newGame(ref userMap, ref cpuMap);
+                        break;
+                    case "2":
+                        break;
+                    case "3":
+                        break;
+                    case "4":
+                        break;
+
+                }
+
+            } while (opcao != "5");
+        }
+
+        static void newGame(ref int[,] userMap, ref int[,] cpuMap)
+        {
+            //Atribuição de Valores aos Navios do Computador (Porta Aviões - 5 Posições) (Cruzador - 4 Posições) (Contratorpedo - 3 Posições) (Rebocador - 2 Posições)
+            int[,] movesMap = new int[10, 10];
+            title();
+            Console.WriteLine("\n\nStarting Game...\n");
+            fillMap(ref cpuMap, 5);
+            fillMap(ref cpuMap, 4);
+            fillMap(ref cpuMap, 3);
+            fillMap(ref cpuMap, 2);
+            fillMap(ref userMap, 5);
+            fillMap(ref userMap, 4);
+            fillMap(ref userMap, 3);
+            fillMap(ref userMap, 2);
+            Console.WriteLine("Your Ships are Displayed on the Left. On the right side your moves are displayed.");
+            Console.WriteLine("\nPress Ok to Continue");
+            Console.ReadLine();
+            int[] move = new int[2];
+            int x,y;
+            do
+            {
+                Console.Clear();
+                title();
+                showMap(ref cpuMap, ref movesMap);
+                Console.WriteLine("What's your move?");
+                x = int.Parse(Console.ReadLine());
+                y = int.Parse(Console.ReadLine());
+                if (cpuMap[x, y] == 1)
+                {
+                    hit();
+                    cpuMap[x, y] = 0;
+                }
+                else if (cpuMap[x, y] == 1)
+                {
+
+                };
+
+                title();
+                Console.WriteLine("Computer's turn! Press Enter to Continue");
+
+            } while(x!= 10 || y!=10);
+
+
+        }
+        static void fillMap(ref int[,] cpuMap, int shipsize)
+        {
+            bool isOpen = true;
+            while (isOpen ==true)
+            {
+                Random rand = new Random(Guid.NewGuid().GetHashCode());
+                //Next() has the second parameter be exclusive, while the first parameter is inclusive.
+                int startcolumn = rand.Next(1, 11);
+                int startrow = rand.Next(1, 11);
+                int endrow = startrow, endcolumn = startcolumn;
+                int orientation = rand.Next(1, 101) % 2; //0 for Horizontal
+                if (orientation == 0)
+                {
+                    for (int i = 1; i < shipsize; i++)
+                    {
+                        endrow++;
+                    }
+                }
+                else if (orientation == 1)
+                {
+                    for (int i = 1; i < shipsize; i++)
+                    {
+                        endcolumn++;
+                    }
+                }
+                if (endrow >= 10 || endcolumn >= 10 ||startrow >= 6 || startcolumn >=6)
+                {
+                    isOpen = true;
+                    continue; //Restart the while loop to select a new random panel
+                }
+
+                //Check if specified panels are occupied
+                int hor = 0, ver = 0;
+                for (int i = 0; i < shipsize; i++)
+                {
+                    if (cpuMap[(startcolumn + i) , endrow ] == 1)
+                    {
+                        break; //Restart the while loop to select a new random panel
+                    }
+                    else if (cpuMap[(startrow + i), endcolumn] ==1)
+                    {
+                        continue;
+                    }
+                    if (cpuMap[(startcolumn + i), endrow] == 0)
+                    {
+                        hor++;
+                    }
+                    else if (cpuMap[(startrow + i), endcolumn] == 0)
+                    {
+                        ver++;
+                    }
+                }
+                if (hor==shipsize)
+                {
+                    for (int j = 0; j < shipsize; j++)
+                    {
+                        cpuMap[(startcolumn + j), endrow] = 1;
+                        isOpen = false;
+                    }
+                }
+                else if (ver==shipsize)
+                {
+                    for (int j = 0; j < shipsize; j++)
+                    {
+                        cpuMap[(startrow + j), endcolumn] = 1;
+                        isOpen = false;
+                    }
+                }
+            }
+
+        }
+        static void showMap(ref int [,] map, ref int [,] movesMap)
+        {
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(map[0, i]);
+            }
+            Console.Write("    ");
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(movesMap[0, i]);
+            }
+            Console.WriteLine();
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(map[1, i]);
+            }
+            Console.Write("    ");
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(movesMap[1, i]);
+            }
+            Console.WriteLine();
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(map[2, i]);
+            }
+            Console.Write("    ");
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(movesMap[2, i]);
+            }
+            Console.WriteLine();
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(map[3, i]);
+            }
+            Console.Write("    ");
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(movesMap[3, i]);
+            }
+            Console.WriteLine();
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(map[4, i]);
+            }
+            Console.Write("    ");
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(movesMap[4, i]);
+            }
+            Console.WriteLine();
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(map[5, i]);
+            }
+            Console.Write("    ");
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(movesMap[5, i]);
+            }
+            Console.WriteLine();
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(map[6, i]);
+            }
+            Console.Write("    ");
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(movesMap[6, i]);
+            }
+            Console.WriteLine();
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(map[7, i]);
+            }
+            Console.Write("    ");
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(movesMap[7, i]);
+            }
+            Console.WriteLine();
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(map[8, i]);
+            }
+            Console.Write("    ");
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(movesMap[8, i]);
+            }
+            Console.WriteLine();
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(map[9, i]);
+            }
+            Console.Write("    ");
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(movesMap[9, i]);
+            }
+            Console.WriteLine();
+        }
+    }
+}
+
+
+
+
