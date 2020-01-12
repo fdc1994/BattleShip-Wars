@@ -1,196 +1,611 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Jogo___Projeto
 {
-
     class Program
     {
+        [DllImport("kernel32.dll", ExactSpelling = true)]
+        private static extern IntPtr GetConsoleWindow();
+        private static IntPtr ThisConsole = GetConsoleWindow();
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        private const int HIDE = 0;
+        private const int MAXIMIZE = 3;
+        private const int MINIMIZE = 6;
+        private const int RESTORE = 9;
+
+        static void waves()
+        {
+            string waves = @"
+_      _      _      _      _      _      _      __      _      _      _      _      _      _      ___      _      _      _      _      _      _      
+)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)`'-.,_)";
+            colorblue();
+            Console.Write(waves + waves);
+        }
+        static void colorred()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+        }
+        static void colorwhite()
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+        static void colorblue()
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+
+        }
+        static void colorgrey()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+        }
         static void programStart()
         {
             string title = @"
-    ██████╗  █████╗ ████████╗ █████╗ ██╗     ██╗  ██╗ █████╗             ███╗   ██╗ █████╗ ██╗   ██╗ █████╗ ██╗     
-    ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║     ██║  ██║██╔══██╗            ████╗  ██║██╔══██╗██║   ██║██╔══██╗██║     
-    ██████╔╝███████║   ██║   ███████║██║     ███████║███████║            ██╔██╗ ██║███████║██║   ██║███████║██║     
-    ██╔══██╗██╔══██║   ██║   ██╔══██║██║     ██╔══██║██╔══██║            ██║╚██╗██║██╔══██║╚██╗ ██╔╝██╔══██║██║     
-    ██████╔╝██║  ██║   ██║   ██║  ██║███████╗██║  ██║██║  ██║            ██║ ╚████║██║  ██║ ╚████╔╝ ██║  ██║███████╗
-    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝            ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝
-                                                                                                                
+    
+                        ██████╗  █████╗ ████████╗████████╗██╗     ███████╗███████╗██╗  ██╗██╗██████╗     ██╗    ██╗ █████╗ ██████╗ ███████╗
+                        ██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██║     ██╔════╝██╔════╝██║  ██║██║██╔══██╗    ██║    ██║██╔══██╗██╔══██╗██╔════╝
+                        ██████╔╝███████║   ██║      ██║   ██║     █████╗  ███████╗███████║██║██████╔╝    ██║ █╗ ██║███████║██████╔╝███████╗
+                        ██╔══██╗██╔══██║   ██║      ██║   ██║     ██╔══╝  ╚════██║██╔══██║██║██╔═══╝     ██║███╗██║██╔══██║██╔══██╗╚════██║
+                        ██████╔╝██║  ██║   ██║      ██║   ███████╗███████╗███████║██║  ██║██║██║         ╚███╔███╔╝██║  ██║██║  ██║███████║
+                        ╚═════╝ ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝╚═╝          ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
 ";
-            string ship = @"
-                                                    )___(
-                                            _______/__/_
-                                    ___     /===========|   ___
-                    ____       __   [\\\]___/____________|__[///]   __
-                    \   \_____[\\]__/___________________________\__[//]___
-                    \40A                                                 |
-                    \                                                  /
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
-            string submarine =
-                @"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                                                                     o o
-                                                                     o ooo
-                                                                       o oo
-                                                                          o o      |   #)
-                                                                           oo     _|_|_#_    
-                                                                             o   |       |
-                                        __                    ___________________|       |_________________
-                                       |   -_______-----------                                              \
-                                      >|    _____                                                   --->     )
+            string ship = @"       
+                                                   |__         
+                                                   |\/             
+                                                   ---                                          
+                                                  / | [
+                                           !      | |||                                             
+                                         _/|     _/|-++'                                                                                      )___(   
+                                     +  +--|    |--|--|_ |-                                                                            _______/__/_   
+                                 +---------------___[}-_===_.'____               /\                                                   /===========|
+                             ____`-' ||___-{]_| _[}-  |     |_[___\==--          \/   _                                              /___________ |
+                 __..._____--==/___]_|__|_____________________________[___\==--___,-----' .7               ____       __   [\\\]___/____________|__[///] 
+                |                                                                   BB-61/                 \   \_____[\\]__/___________________________\__[//]_____    
+                \_______________________________________________________________________|                   \40A                                                   |
+                                                                                                             \____________________________________________________/";
+            string submarine = @"
+                                                                     o o                                        
+                                                                     o ooo                                      
+                                                                       o oo                                     
+                                                                          o o      |   #)                       
+                                                                           oo     _|_|_#_                       
+                                                                             o   |       |                      
+                                        __                    ___________________|       |_________________     
+                                       |   -_______-----------                                              \   
+                                      >|    _____                                                   --->     )  
                                        |__ -     ---------_________________________________________________ /";
+            Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
+            ShowWindow(ThisConsole, MAXIMIZE);
+            colorred();
             Console.WriteLine(title);
-            Console.WriteLine("\n");
+            Console.WriteLine();
+            colorgrey();
             Console.WriteLine(ship);
+            colorblue();
+            waves();
+            colorgrey();
             Console.WriteLine(submarine);
             Console.ReadKey();
         }
         static void title()
         {
+            colorred();
             Console.Clear();
-            Console.Write(@"
-██████╗  █████╗ ████████╗ █████╗ ██╗     ██╗  ██╗ █████╗             ███╗   ██╗ █████╗ ██╗   ██╗ █████╗ ██╗     
-██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║     ██║  ██║██╔══██╗            ████╗  ██║██╔══██╗██║   ██║██╔══██╗██║     
-██████╔╝███████║   ██║   ███████║██║     ███████║███████║            ██╔██╗ ██║███████║██║   ██║███████║██║     
-██╔══██╗██╔══██║   ██║   ██╔══██║██║     ██╔══██║██╔══██║            ██║╚██╗██║██╔══██║╚██╗ ██╔╝██╔══██║██║     
-██████╔╝██║  ██║   ██║   ██║  ██║███████╗██║  ██║██║  ██║            ██║ ╚████║██║  ██║ ╚████╔╝ ██║  ██║███████╗
-╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝            ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝
-                                                                                                                
-");
+            Console.WriteLine(@"                       
+                        ██████╗  █████╗ ████████╗████████╗██╗     ███████╗███████╗██╗  ██╗██╗██████╗     ██╗    ██╗ █████╗ ██████╗ ███████╗
+                        ██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██║     ██╔════╝██╔════╝██║  ██║██║██╔══██╗    ██║    ██║██╔══██╗██╔══██╗██╔════╝
+                        ██████╔╝███████║   ██║      ██║   ██║     █████╗  ███████╗███████║██║██████╔╝    ██║ █╗ ██║███████║██████╔╝███████╗
+                        ██╔══██╗██╔══██║   ██║      ██║   ██║     ██╔══╝  ╚════██║██╔══██║██║██╔═══╝     ██║███╗██║██╔══██║██╔══██╗╚════██║
+                        ██████╔╝██║  ██║   ██║      ██║   ███████╗███████╗███████║██║  ██║██║██║         ╚███╔███╔╝██║  ██║██║  ██║███████║
+                        ╚═════╝ ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝╚═╝          ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝");
         }
-
-        static void hit()
-        {
-            Console.Clear();
-            Console.WriteLine(@"
-            ██████╗ ██╗██████╗ ███████╗ ██████╗████████╗    ██╗  ██╗██╗████████╗██╗
-            ██╔══██╗██║██╔══██╗██╔════╝██╔════╝╚══██╔══╝    ██║  ██║██║╚══██╔══╝██║
-            ██║  ██║██║██████╔╝█████╗  ██║        ██║       ███████║██║   ██║   ██║
-            ██║  ██║██║██╔══██╗██╔══╝  ██║        ██║       ██╔══██║██║   ██║   ╚═╝
-            ██████╔╝██║██║  ██║███████╗╚██████╗   ██║       ██║  ██║██║   ██║   ██╗
-            ╚═════╝ ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝   ╚═╝       ╚═╝  ╚═╝╚═╝   ╚═╝   ╚═╝
-                                                                       
-            ");
-            Console.Write(@" 
-                                    --_--
-                                 (  -_    _).
-                               ( ~       )   )
-                             (( )  (    )  ()  )
-                              (.   )) (       )
-                                ``..     ..``
-                                     | |
-                                   (=| |=)
-                                     | |         
-                                 (../( )\.))");
-            Console.Write(@"  |__
-                                     |\/
-                                     ---
-                                     / | [
-                              !      | |||
-                            _/|     _/|-++'
-                        +  +--|    |--|--|_ |-
-                     { /|__|  |/\__|  |--- |||__/
-                    +---------------___[}-_===_.'____               /\
-                ____`-' ||___-{]_| _[}-  |     |_[___\==--          \/   _
- __..._____--==/___]_|__|_____________________________[___\==--___,-----' .7
-|                                                                   BB-61/
- \_______________________________________________________________________|");
-            Console.ReadKey();
-        }
-        static void Main(string[] args)
+        static void Main()
         {
             programStart();
             string opcao;
             do
             {
-                int[,] userMap = new int[10, 10];
-                int[,] cpuMap = new int[10, 10];
                 title();
+                colorwhite();
                 Console.WriteLine("Main Menu");
                 Console.WriteLine("\n1 - New Game");
-                Console.WriteLine("2 - Continue Game");
-                Console.WriteLine("3 - Load Save Game");
-                Console.WriteLine("4 - LeaderBoard");
-                Console.WriteLine("5 - End Game");
-                Console.WriteLine("Please Select an option ");
+                Console.WriteLine("2 - Load Save Game");
+                Console.WriteLine("3 - LeaderBoard");
+                Console.WriteLine("4 - End Game\n\n\n\n");
+                waves();
+                Console.WriteLine("\n\n");
+                colorwhite();
+                Console.WriteLine("Please Select an option:");
                 opcao = Console.ReadLine();
+
                 switch (opcao)
                 {
                     default:
                         Console.Clear();
                         break;
                     case "1":
-                        newGame(ref userMap, ref cpuMap);
+                        gameStart(int.Parse(opcao));
                         break;
                     case "2":
+                        gameStart(int.Parse(opcao));
                         break;
                     case "3":
                         break;
-                    case "4":
-                        break;
 
                 }
 
-            } while (opcao != "5");
+            } while (opcao != "4");
         }
-
-        static void newGame(ref int[,] userMap, ref int[,] cpuMap)
+        static void gameStart(int newGameOrLoadGame)
         {
-            //Atribuição de Valores aos Navios do Computador (Porta Aviões - 5 Posições) (Cruzador - 4 Posições) (Contratorpedo - 3 Posições) (Rebocador - 2 Posições)
-            int[,] movesMap = new int[10, 10];
+            string[,] userMovesMap = new string[10, 10];
+            string[,] cpuMovesMap = new string[10, 10];
+            int[] shipHealth = new int[8];
+            int[] cpuMove = new int[2];
+            int[] HP = new int[2];
+            //user HP
+            HP[0] = 0;
+            //CPU HP
+            HP[1] = 0;
+            string[,] cpuShips = new string[10, 10];
+            string[,] userShips = new string[10, 10];
+            string userMove = "";
+            string wrongCoordinates = @"
+██╗███╗   ██╗ ██████╗ ██████╗ ██████╗ ██████╗ ███████╗ ██████╗████████╗    ███╗   ███╗ ██████╗ ██╗   ██╗███████╗██╗
+██║████╗  ██║██╔════╝██╔═══██╗██╔══██╗██╔══██╗██╔════╝██╔════╝╚══██╔══╝    ████╗ ████║██╔═══██╗██║   ██║██╔════╝██║
+██║██╔██╗ ██║██║     ██║   ██║██████╔╝██████╔╝█████╗  ██║        ██║       ██╔████╔██║██║   ██║██║   ██║█████╗  ██║
+██║██║╚██╗██║██║     ██║   ██║██╔══██╗██╔══██╗██╔══╝  ██║        ██║       ██║╚██╔╝██║██║   ██║╚██╗ ██╔╝██╔══╝  ╚═╝
+██║██║ ╚████║╚██████╗╚██████╔╝██║  ██║██║  ██║███████╗╚██████╗   ██║       ██║ ╚═╝ ██║╚██████╔╝ ╚████╔╝ ███████╗██╗
+╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝   ╚═╝       ╚═╝     ╚═╝ ╚═════╝   ╚═══╝  ╚══════╝╚═╝
+                                                                                                                   
+████████╗██████╗ ██╗   ██╗     █████╗  ██████╗  █████╗ ██╗███╗   ██╗██╗                                            
+╚══██╔══╝██╔══██╗╚██╗ ██╔╝    ██╔══██╗██╔════╝ ██╔══██╗██║████╗  ██║██║                                            
+   ██║   ██████╔╝ ╚████╔╝     ███████║██║  ███╗███████║██║██╔██╗ ██║██║                                            
+   ██║   ██╔══██╗  ╚██╔╝      ██╔══██║██║   ██║██╔══██║██║██║╚██╗██║╚═╝                                            
+   ██║   ██║  ██║   ██║       ██║  ██║╚██████╔╝██║  ██║██║██║ ╚████║██╗                                            
+   ╚═╝   ╚═╝  ╚═╝   ╚═╝       ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚═╝                                            
+                                                                                                                   
+";
             title();
+            colorwhite();
             Console.WriteLine("\n\nStarting Game...\n");
-            fillMap(ref cpuMap, 5);
-            fillMap(ref cpuMap, 4);
-            fillMap(ref cpuMap, 3);
-            fillMap(ref cpuMap, 2);
-            fillMap(ref userMap, 5);
-            fillMap(ref userMap, 4);
-            fillMap(ref userMap, 3);
-            fillMap(ref userMap, 2);
+            if (newGameOrLoadGame == 1)
+            {
+                for (int i = 5; i >= 2; i--)
+                {
+                    fillMap(i, ref cpuShips);
+                    fillMap(i, ref userShips);
+                }
+                for (int i = 0; i < 10; i++)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        switch (userShips[i, j])
+                        {
+                            case "2":
+                                shipHealth[0] = (shipHealth[0] + 1);
+                                HP[0] = (HP[0] + 1);
+                                break;
+                            case "3":
+                                shipHealth[1] = (shipHealth[1] + 1);
+                                HP[0] = (HP[0] + 1);
+                                break;
+                            case "4":
+                                shipHealth[2] = (shipHealth[2] + 1);
+                                HP[0] = (HP[0] + 1);
+                                break;
+                            case "5":
+                                shipHealth[3] = (shipHealth[3] + 1);
+                                HP[0] = (HP[0] + 1);
+                                break;
+                        }
+                    }
+                    for (int j = 0; j < 10; j++)
+                    {
+                        switch (cpuShips[i, j])
+                        {
+                            case "2":
+                                shipHealth[4] = (shipHealth[4] + 1);
+                                HP[1] = (HP[1] + 1);
+                                break;
+                            case "3":
+                                shipHealth[5] = (shipHealth[5] + 1);
+                                HP[1] = (HP[1] + 1);
+                                break;
+                            case "4":
+                                shipHealth[6] = (shipHealth[6] + 1);
+                                HP[1] = (HP[1] + 1);
+                                break;
+                            case "5":
+                                shipHealth[7] = (shipHealth[7] + 1);
+                                HP[1] = (HP[1] + 1);
+                                break;
+                        }
+                    }
+                }
+            }
+            else if (newGameOrLoadGame == 2)
+            {
+                loadGame(ref cpuShips, ref userShips, ref cpuMovesMap, ref userMovesMap);
+                for (int i = 0; i < 10; i++)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        switch (userShips[i, j])
+                        {
+                            case "2":
+                                shipHealth[0] = (shipHealth[0] + 1);
+                                HP[0] = (HP[0] + 1);
+                                break;
+                            case "3":
+                                shipHealth[1] = (shipHealth[1] + 1);
+                                HP[0] = (HP[0] + 1);
+                                break;
+                            case "4":
+                                shipHealth[2] = (shipHealth[2] + 1);
+                                HP[0] = (HP[0] + 1);
+                                break;
+                            case "5":
+                                shipHealth[3] = (shipHealth[3] + 1);
+                                HP[0] = (HP[0] + 1);
+                                break;
+                        }
+                    }
+                    for (int j = 0; j < 10; j++)
+                    {
+                        switch (cpuShips[i, j])
+                        {
+                            case "2":
+                                shipHealth[4] = (shipHealth[4] + 1);
+                                HP[1] = (HP[1] + 1);
+                                break;
+                            case "3":
+                                shipHealth[5] = (shipHealth[5] + 1);
+                                HP[1] = (HP[1] + 1);
+                                break;
+                            case "4":
+                                shipHealth[6] = (shipHealth[6] + 1);
+                                HP[1] = (HP[1] + 1);
+                                break;
+                            case "5":
+                                shipHealth[7] = (shipHealth[7] + 1);
+                                HP[1] = (HP[1] + 1);
+                                break;
+                        }
+                    }
+                }
+            }
             Console.WriteLine("Your Ships are Displayed on the Left. On the right side your moves are displayed.");
-            Console.WriteLine("\nPress Ok to Continue");
+            Console.WriteLine("\nPress Ok to Continue\n\n\n\n");
+            waves();
             Console.ReadLine();
-            int[] move = new int[2];
-            int x,y;
-            do
+            int x = 0, y = 0;
+            while (userMove == "" && HP[0] != 0 && HP[1] != 0 && userMove != "EXIT")
             {
                 Console.Clear();
                 title();
-                showMap(ref cpuMap, ref movesMap);
-                Console.WriteLine("What's your move?");
-                x = int.Parse(Console.ReadLine());
-                y = int.Parse(Console.ReadLine());
-                if (cpuMap[x, y] == 1)
+                gameStats(ref userShips, ref userMovesMap, shipHealth);
+                colorwhite();
+                Console.WriteLine("\nWhat's your move?");
+                userMove = Console.ReadLine();
+                if (userMove == "USERWIN")
                 {
-                    hit();
-                    cpuMap[x, y] = 0;
+                    title();
+                    colorwhite();
+                    Console.Write("Cheat Codes will lose all Progress and Won't feature the Leaderboard. Do you want to continue?");
+                    userMove = Console.ReadLine();
+                    if (userMove == "YES")
+                    {
+                        userMove = "EXIT";
+                        HP[1] = 0;
+                        Console.Clear();
+                        continue;
+                    }
+                    else if (userMove == "NO")
+                    {
+                        continue;
+                    }
                 }
-                else if (cpuMap[x, y] == 1)
+                if (userMove == "CPUWIN")
                 {
+                    title();
+                    colorwhite();
+                    Console.Write("Cheat Codes will lose all Progress and Won't feature the Leaderboard. Do you want to continue?");
+                    userMove = Console.ReadLine();
+                    if (userMove == "YES")
+                    {
+                        HP[0] = 0;
+                        userMove = "EXIT";
+                        Console.Clear();
+                        continue;
+                    }
+                    else if (userMove == "NO")
+                    {
+                        continue;
+                    }
+                }
+                if (userMove == "EXIT" || userMove == "exit")
+                {
+                    title();
+                    colorwhite();
+                    Console.Write("Quitting the Game at this stage will lose all Progress. Do you want to continue?");
+                    userMove = Console.ReadLine();
+                    if (userMove == "YES")
+                    {
+                        userMove = "EXIT";
+                        continue;
+                    }
+                    else if (userMove == "NO")
+                    {
+                        userMove = "";
+                        continue;
+                    }
+                }
+                else if (userMove != "EXIT " && HP[0] != 0 && HP[1] != 0)
+                {
+                    switch (userMove)
+                    {
 
-                };
+                        case "A":
+                            x = 0;
+                            break;
+                        case "B":
+                            x = 1;
+                            break;
+                        case "C":
+                            x = 2;
+                            break;
+                        case "D":
+                            x = 3;
+                            break;
+                        case "E":
+                            x = 4;
+                            break;
+                        case "F":
+                            x = 5;
+                            break;
+                        case "G":
+                            x = 6;
+                            break;
+                        case "H":
+                            x = 7;
+                            break;
+                        case "I":
+                            x = 8;
+                            break;
+                        case "J":
+                            x = 9;
+                            break;
+                        case "EXIT":
+                            continue;
+                        default:
+                            userMove = "";
+                            colorred();
+                            Console.Clear();
+                            Console.WriteLine(wrongCoordinates);
+                            Console.ReadKey();
+                            continue;
+                    }
+                    userMove = Console.ReadLine();
+                    switch (userMove)
+                    {
+                        case "1":
+                            y = 0;
+                            userMove = "";
+                            break;
+                        case "2":
+                            y = 1;
+                            userMove = "";
+                            break;
+                        case "3":
+                            y = 2;
+                            userMove = "";
+                            break;
+                        case "4":
+                            y = 3;
+                            userMove = "";
+                            break;
+                        case "5":
+                            y = 4;
+                            userMove = "";
+                            break;
+                        case "6":
+                            y = 5;
+                            userMove = "";
+                            break;
+                        case "7":
+                            y = 6;
+                            userMove = "";
+                            break;
+                        case "8":
+                            y = 7;
+                            userMove = "";
+                            break;
+                        case "9":
+                            y = 8;
+                            userMove = "";
+                            break;
+                        case "10":
+                            y = 9;
+                            userMove = "";
+                            break;
+                        case "EXIT":
+                            continue;
+                        default:
+                            userMove = "";
+                            colorred();
+                            Console.Clear();
+                            Console.WriteLine(wrongCoordinates);
+                            Console.ReadKey();
+                            continue;
+                    }
+                    hit(ref cpuShips, ref shipHealth, ref userMovesMap, HP, x, y, 0);
+                    title();
+                    colorwhite();
+                    Console.WriteLine("Computer's turn! Press Enter to Continue");
+                    Console.ReadLine();
+                    cpuMoveProc(ref cpuMove, ref cpuMovesMap);
+                    hit(ref userShips, ref shipHealth, ref cpuMovesMap, HP, cpuMove[0], cpuMove[1], 1);
+                }
+            }
+            if (HP[0] == 0)
+            {
+                string cpuWin = @"
+                                ▓█████  ███▄    █ ▓█████  ███▄ ▄███▓▓██   ██▓    █     █░ ██▓ ███▄    █   ██████  ▐██▌ 
+                                ▓█   ▀  ██ ▀█   █ ▓█   ▀ ▓██▒▀█▀ ██▒ ▒██  ██▒   ▓█░ █ ░█░▓██▒ ██ ▀█   █ ▒██    ▒  ▐██▌ 
+                                ▒███   ▓██  ▀█ ██▒▒███   ▓██    ▓██░  ▒██ ██░   ▒█░ █ ░█ ▒██▒▓██  ▀█ ██▒░ ▓██▄    ▐██▌ 
+                                ▒▓█  ▄ ▓██▒  ▐▌██▒▒▓█  ▄ ▒██    ▒██   ░ ▐██▓░   ░█░ █ ░█ ░██░▓██▒  ▐▌██▒  ▒   ██▒ ▓██▒ 
+                                ░▒████▒▒██░   ▓██░░▒████▒▒██▒   ░██▒  ░ ██▒▓░   ░░██▒██▓ ░██░▒██░   ▓██░▒██████▒▒ ▒▄▄  
+                                ░░ ▒░ ░░ ▒░   ▒ ▒ ░░ ▒░ ░░ ▒░   ░  ░   ██▒▒▒    ░ ▓░▒ ▒  ░▓  ░ ▒░   ▒ ▒ ▒ ▒▓▒ ▒ ░ ░▀▀▒ 
+                                 ░ ░  ░░ ░░   ░ ▒░ ░ ░  ░░  ░      ░ ▓██ ░▒░      ▒ ░ ░   ▒ ░░ ░░   ░ ▒░░ ░▒  ░ ░ ░  ░ 
+                                   ░      ░   ░ ░    ░   ░      ░    ▒ ▒ ░░       ░   ░   ▒ ░   ░   ░ ░ ░  ░  ░      ░ 
+                                   ░  ░         ░    ░  ░       ░    ░ ░            ░     ░           ░       ░   ░    
+                                     ░ ░                                               
+                                                                        ,-.
+                                                   ___,---.__          /'|`\          __,---,___
+                                                ,-'    \`    `-.____,-'  |  `-.____,-'    //    `-.
+                                              ,'        |           ~'\     /`~           |        `.
+                                             /      ___//              `. ,'          ,  , \___      \
+                                            |    ,-'   `-.__   _         |        ,    __,-'   `-.    |
+                                            |   /          /\_  `   .    |    ,      _/\          \   |
+                                            \  |           \ \`-.___ \   |   / ___,-'/ /           |  /
+                                             \  \           | `._   `\\  |  //'   _,' |           /  /
+                                              `-.\         /'  _ `---'' , . ``---' _  `\         /,-'
+                                                 ``       /     \    ,='/ \`=.    /     \       ''
+                                                         |__   /|\_,--.,-.--,--._/|\   __|
+                                                         /  `./  \\`\ |  |  | /,//' \,'  \
+                                                        /   /     ||--+--|--+-/-|     \   \
+                                                       |   |     /'\_\_\ | /_/_/`\     |   |
+                                                        \   \__, \_     `~'     _/ .__/   /
+                                                         `-._,-'   `-._______,-'   `-._,-'
+";
+                string tryAgain = @"
+                                ▄▄▄█████▓ ██▀███ ▓██   ██▓    ▄▄▄        ▄████  ▄▄▄       ██▓ ███▄    █  ▐██▌ 
+                                ▓  ██▒ ▓▒▓██ ▒ ██▒▒██  ██▒   ▒████▄     ██▒ ▀█▒▒████▄    ▓██▒ ██ ▀█   █  ▐██▌ 
+                                ▒ ▓██░ ▒░▓██ ░▄█ ▒ ▒██ ██░   ▒██  ▀█▄  ▒██░▄▄▄░▒██  ▀█▄  ▒██▒▓██  ▀█ ██▒ ▐██▌ 
+                                ░ ▓██▓ ░ ▒██▀▀█▄   ░ ▐██▓░   ░██▄▄▄▄██ ░▓█  ██▓░██▄▄▄▄██ ░██░▓██▒  ▐▌██▒ ▓██▒ 
+                                  ▒██▒ ░ ░██▓ ▒██▒ ░ ██▒▓░    ▓█   ▓██▒░▒▓███▀▒ ▓█   ▓██▒░██░▒██░   ▓██░ ▒▄▄  
+                                  ▒ ░░   ░ ▒▓ ░▒▓░  ██▒▒▒     ▒▒   ▓▒█░ ░▒   ▒  ▒▒   ▓▒█░░▓  ░ ▒░   ▒ ▒  ░▀▀▒ 
+                                  ░      ░▒ ░ ▒░▓██ ░▒░      ▒   ▒▒ ░  ░   ░   ▒   ▒▒ ░ ▒ ░░ ░░   ░ ▒░ ░  ░ 
+                                  ░        ░░   ░ ▒ ▒ ░░       ░   ▒   ░ ░   ░   ░   ▒    ▒ ░   ░   ░ ░     ░ 
+                                          ░     ░ ░              ░  ░      ░       ░  ░ ░           ░  
+                                                   ░ ░                                                    
+";
+                colorred();
+                Console.Write(cpuWin);
+                Console.Write(tryAgain);
+                colorwhite();
+                Console.Write("Press Any Key to Continue");
+                Console.ReadKey();
+            }
+            else if (HP[1] == 0)
+            {
 
-                title();
-                Console.WriteLine("Computer's turn! Press Enter to Continue");
-
-            } while(x!= 10 || y!=10);
+                string victory = @"     
 
 
+                                                    ██╗   ██╗██╗ ██████╗████████╗ ██████╗ ██████╗ ██╗   ██╗██╗
+                                                    ██║   ██║██║██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝██║
+                                                    ██║   ██║██║██║        ██║   ██║   ██║██████╔╝ ╚████╔╝ ██║
+                                                    ╚██╗ ██╔╝██║██║        ██║   ██║   ██║██╔══██╗  ╚██╔╝  ╚═╝
+                                                     ╚████╔╝ ██║╚██████╗   ██║   ╚██████╔╝██║  ██║   ██║   ██╗
+                                                      ╚═══╝  ╚═╝ ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝";
+                string buildings = @"               
+              . .                     -:-             .  .  ..                          . .                     -:-             .  .  ..                          . .                     -:-             .  .  ..            
+            .'.:,'.        .  .  .     ' .           . \ | / .                        .'.:,'.        .  .  .     ' .           . \ | / .                        .'.:,'.        .  .  .     ' .           . \ | / .            
+            .'.;.`.       ._. ! ._.       \          .__\:/__.                        .'.;.`.       ._. ! ._.       \          .__\:/__.                        .'.;.`.       ._. ! ._.       \          .__\:/__.            
+             `,:.'         ._\!/_.                     .';`.      . ' .                `,:.'         ._\!/_.                     .';`.      . ' .                `,:.'         ._\!/_.                     .';`.      . ' .   
+             ,'             . ! .        ,.,      ..======..       .:.                 ,'             . ! .        ,.,      ..======..       .:.                 ,'             . ! .        ,.,      ..======..       .:.    
+            ,                 .         ._!_.     ||::: : | .        ',               ,                 .         ._!_.     ||::: : | .        ',               ,                 .         ._!_.     ||::: : | .        ',   
+     .====.,                  .           ;  .~.===: : : :|   ..===.           .====.,                  .           ;  .~.===: : : :|   ..===.           .====.,                  .           ;  .~.===: : : :|   ..===.      
+     |.::'||      .=====.,    ..=======.~,   | |: :|::::::|   ||:::|=====|     |.::'||      .=====.,    ..=======.~,   | |: :|::::::|   ||:::|=====|     |.::'||      .=====.,    ..=======.~,   | |: :|::::::|   ||:::|=====|
+  ___| :::|!__.,  |:::::|!_,   |: :: ::|'|l_l| |:: |:;;:::|___!| ::|: : :|  ___| :::|!__.,  |:::::|!_,   |: :: ::|'|l_l| |:: |:;;:::|___!| ::|: : :|  ___| :::|!__.,  |:::::|!_,   |: :: ::|'|l_l| |:: |:;;:::|___!| ::|: : :|
+ |: :|::: |:: |!__|; :: |: |===::: :: :|'||_|| | : |: :: :|: : |:: |:::::| |: :|::: |:: |!__|; :: |: |===::: :: :|'||_|| | : |: :: :|: : |:: |:::::| |: :|::: |:: |!__|; :: |: |===::: :: :|'||_|| | : |: :: :|: : |:: |:::::|
+ |:::| _::|: :|:::|:===:|::|:::|:===F=:|'!/|\! |::F|:====:|::_:|: :|::__:| |:::| _::|: :|:::|:===:|::|:::|:===F=:|'!/|\! |::F|:====:|::_:|: :|::__:| |:::| _::|: :|:::|:===:|::|:::|:===F=:|'!/|\! |::F|:====:|::_:|: :|::__:|
+ !_[]![_]_!_[]![]_!_[__]![]![_]![_][I_]!//_:_\\![]I![_][_]!_[_]![]_!_[__]!!_[]![_]_!_[]![]_!_[__]![]![_]![_][I_]!//_:_\\![]I![_][_]!_[_]![]_!_[__]!!_[]![_]_!_[]![]_!_[_;
+ ";
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine(victory);
+                colorgrey();
+                Console.WriteLine(buildings);
+                string ship = @"
+                          |__
+                                                    |\/                                                         _)`'-.,_)`'-.,_                               _)`'-.,_)`'-.,_
+       _)`'-.,_)`'-.,__)`'-.,_)`'-.,__)`'-.,_)`'-.,_                                             ---
+                                                    / | [
+                                            !      | |||                                      _)`'-.,_)`'-.,_                         _)`'-.,_)`'-.,_
+                                        _/|     _/|-++'                                                   _)`'-.,_)`'-.,_                                               _)`'-.,_)`'-.,_
+                                    +  +--|    |--|--|_ |-
+                                    { /|__|  |/\__|  |--- |||__/
+     _)`'-.,_)`'-.,_                           +---------------___[}-_===_.'____               /\            _)`'-.,_)`'-.,_                                                                      _)`'-.,_)`'-.,_
+                            ____`-' ||___-{]_| _[}-  |     |_[___\==--          \/   _
+                __..._____--==/___]_|__|_____________________________[___\==--___,-----' .7                            _)`'-.,_)`'-.,__)`'-.,_)`'-.,__)`'-.,_)`'-.,_
+            |                                                                   BB-61/
+                \_______________________________________________________________________|             _)`'-.,_)`'-.,_                                   _)`'-.,_)`'-.,_                              _)`'-.,_)`'-.,_
+                                                                                                                                    )___(
+                                                                                                                             _______/__/_
+                                                                                 _)`'-.,_)`'-.,_                                   ___     /===========|   ___
+  _)`'-.,_)`'-.,_                                                                                                 ____       __   [\\\]___/____________|__[///]   __
+                                                                                                   \   \_____[\\]__/___________________________\__[//]_____
+                                                         _)`'-.,_)`'-.,_                                           \40A                                                   |
+                                                                                                     \____________________________________________________/                                             _)`'-.,_)`'-.,_                                                              ";
+                Console.WriteLine(ship);
+                waves();
+                waves();
+                Console.ReadKey();
+            }
+            else if (userMove == "EXIT")
+            {
+                string opcao;
+                do
+                {
+                    title();
+                    colorwhite();
+                    Console.Write("\n\nDo you want to save your current Progress?");
+                    opcao = Console.ReadLine();
+                    switch (opcao)
+                    {
+                        default:
+                            Console.Clear();
+                            break;
+                        case "1":
+                            saveGame(ref cpuShips, ref userShips, ref cpuMovesMap, ref userMovesMap);
+                            break;
+                        case "2":
+                            Main();
+                            break;
+
+                    }
+                } while (opcao != "1" && opcao != "2");
+
+
+            }
         }
-        static void fillMap(ref int[,] cpuMap, int shipsize)
+        static void fillMap(int shipsize, ref string[,] ships)
         {
             bool isOpen = true;
-            while (isOpen ==true)
+            while (isOpen == true)
             {
-                Random rand = new Random(Guid.NewGuid().GetHashCode());
+                Random rand = new Random();
                 //Next() has the second parameter be exclusive, while the first parameter is inclusive.
-                int startcolumn = rand.Next(1, 11);
-                int startrow = rand.Next(1, 11);
+                int startcolumn = rand.Next(0, 10);
+                int startrow = rand.Next(0, 10);
                 int endrow = startrow, endcolumn = startcolumn;
                 int orientation = rand.Next(1, 101) % 2; //0 for Horizontal
                 if (orientation == 0)
                 {
+                    if (startcolumn + shipsize > 9)
+                    {
+                        isOpen = true;
+                        continue;
+                    }
                     for (int i = 1; i < shipsize; i++)
                     {
                         endrow++;
@@ -198,12 +613,17 @@ namespace Jogo___Projeto
                 }
                 else if (orientation == 1)
                 {
+                    if (startrow + shipsize > 9)
+                    {
+                        isOpen = true;
+                        continue;
+                    }
                     for (int i = 1; i < shipsize; i++)
                     {
                         endcolumn++;
                     }
                 }
-                if (endrow >= 10 || endcolumn >= 10 ||startrow >= 6 || startcolumn >=6)
+                if (endrow >= 10 || endcolumn >= 10)
                 {
                     isOpen = true;
                     continue; //Restart the while loop to select a new random panel
@@ -213,147 +633,1107 @@ namespace Jogo___Projeto
                 int hor = 0, ver = 0;
                 for (int i = 0; i < shipsize; i++)
                 {
-                    if (cpuMap[(startcolumn + i) , endrow ] == 1)
+                    if (ships[(startcolumn + i), endrow] != null)
                     {
                         break; //Restart the while loop to select a new random panel
                     }
-                    else if (cpuMap[(startrow + i), endcolumn] ==1)
+                    else if (ships[(startrow + i), endcolumn] != null)
                     {
-                        continue;
+                        break;
                     }
-                    if (cpuMap[(startcolumn + i), endrow] == 0)
+                    if (orientation == 0 && ships[startcolumn, (endrow - hor)] == null)
                     {
                         hor++;
                     }
-                    else if (cpuMap[(startrow + i), endcolumn] == 0)
+                    if (orientation == 1 && ships[startrow, endcolumn - hor] == null)
                     {
                         ver++;
                     }
                 }
-                if (hor==shipsize)
+                if (hor == shipsize && orientation == 0)
                 {
                     for (int j = 0; j < shipsize; j++)
                     {
-                        cpuMap[(startcolumn + j), endrow] = 1;
                         isOpen = false;
+                        switch (shipsize)
+                        {
+                            case 1:
+                                break;
+                            case 2:
+                                ships[startcolumn, (endrow - j)] = "2";
+                                break;
+                            case 3:
+                                ships[startcolumn, (endrow - j)] = "3";
+                                break;
+                            case 4:
+                                ships[startcolumn, (endrow - j)] = "4";
+                                break;
+                            case 5:
+                                ships[startcolumn, (endrow - j)] = "5";
+                                break;
+                        }
                     }
+
                 }
-                else if (ver==shipsize)
+                else if (ver == shipsize && orientation == 1)
                 {
                     for (int j = 0; j < shipsize; j++)
                     {
-                        cpuMap[(startrow + j), endcolumn] = 1;
                         isOpen = false;
+                        switch (shipsize)
+                        {
+                            case 1:
+                                break;
+                            case 2:
+                                ships[(startrow + j), endcolumn] = "2";
+                                break;
+                            case 3:
+                                ships[(startrow + j), endcolumn] = "3";
+                                break;
+                            case 4:
+                                ships[(startrow + j), endcolumn] = "4";
+                                break;
+                            case 5:
+                                ships[(startrow + j), endcolumn] = "5";
+                                break;
+                        }
                     }
+
+                }
+            }
+        }
+        static void gameStats(ref string[,] stringMap, ref string[,] movesMap, int[] shipHealth)
+        {
+            char topLeftCorner = '\u2554';
+            char bottomLeftCorner = '\u255A';
+            char bottomRightCorner = '\u255D';
+            char topRightCorner = '\u2557';
+            char horLine = '\u2550';
+            char verLine = '\u2551';
+            char topDiv = '\u2566';
+            char middleDiv = '\u256C';
+            char leftDiv = '\u2560';
+            char rightDiv = '\u2563';
+            char bottomDiv = '\u2569';
+            string HP = @"
+                         ╦ ╦┌─┐┌─┐┬─┐  ╦ ╦╔═╗                                                            ╔═╗┌┐┌┌─┐┌┬┐┬ ┬  ╦ ╦╔═╗ 
+                         ║ ║└─┐├┤ ├┬┘  ╠═╣╠═╝                                                            ║╣ │││├┤ │││└┬┘  ╠═╣╠═╝
+                         ╚═╝└─┘└─┘┴└─  ╩ ╩╩                                                              ╚═╝┘└┘└─┘┴ ┴ ┴   ╩ ╩╩                        ";
+            string maps = @"
+                         ╦ ╦┌─┐┌─┐┬─┐  ╔╦╗┌─┐┌─┐                                                         ╔╦╗┌─┐┬  ┬┌─┐┌─┐  ╔╦╗┌─┐┌─┐
+                         ║ ║└─┐├┤ ├┬┘  ║║║├─┤├─┘                                                         ║║║│ │└┐┌┘├┤ └─┐  ║║║├─┤├─┘
+                         ╚═╝└─┘└─┘┴└─  ╩ ╩┴ ┴┴                                                           ╩ ╩└─┘ └┘ └─┘└─┘  ╩ ╩┴ ┴┴             ";
+            colorwhite();
+            Console.WriteLine(HP);
+            Console.Write("".PadRight(26) + "AirCraft Carrier: " + shipHealth[3].ToString().PadRight(62));
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("AirCraft Carrier: " + shipHealth[7]);
+            colorwhite();
+            Console.Write("".PadRight(26) + "Cruiser:" + shipHealth[2].ToString().PadRight(72));
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Cruiser: " + shipHealth[6]);
+            colorwhite();
+            Console.Write("".PadRight(26) + "Destroyer:" + shipHealth[1].ToString().PadRight(70));
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Destroyer: " + shipHealth[5]);
+            colorwhite();
+            Console.Write("".PadRight(26) + "Submarine:" + shipHealth[0].ToString().PadRight(70));
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Submarine: " + shipHealth[4]);
+            colorwhite();
+            Console.WriteLine(maps);
+            int counter = 1;
+            int x = 0;
+            string letter = null;
+            for (int i = 0; i < 22; i++)
+            {
+                switch (counter)
+                {
+                    case 1:
+                        letter = "A";
+                        break;
+                    case 2:
+                        letter = "B";
+                        break;
+                    case 3:
+                        letter = "C";
+                        break;
+                    case 4:
+                        letter = "D";
+                        break;
+                    case 5:
+                        letter = "E";
+                        break;
+                    case 6:
+                        letter = "F";
+                        break;
+                    case 7:
+                        letter = "G";
+                        break;
+                    case 8:
+                        letter = "H";
+                        break;
+                    case 9:
+                        letter = "I";
+                        break;
+                    case 10:
+                        letter = "J";
+                        break;
+                }
+                if (i == 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("".PadRight(18) + "1 ");
+                    Console.Write("  2 ");
+                    Console.Write("  3 ");
+                    Console.Write("  4 ");
+                    Console.Write("  5 ");
+                    Console.Write("  6 ");
+                    Console.Write("  7 ");
+                    Console.Write("  8 ");
+                    Console.Write("  9 ");
+                    Console.Write("  10");
+                    Console.Write("".PadRight(44));
+                    Console.Write("1 ");
+                    Console.Write("  2 ");
+                    Console.Write("  3 ");
+                    Console.Write("  4 ");
+                    Console.Write("  5 ");
+                    Console.Write("  6 ");
+                    Console.Write("  7 ");
+                    Console.Write("  8 ");
+                    Console.Write("  9 ");
+                    Console.WriteLine("  10");
+                }
+                if (i == 1)
+                {
+                    colorwhite();
+                    Console.Write("".PadRight(13) + "   " + topLeftCorner.ToString());
+                    for (int k = 0; k < 9; k++)
+                    {
+                        Console.Write(horLine.ToString() + horLine.ToString() + horLine.ToString() + topDiv.ToString());
+                    }
+                    Console.Write((horLine.ToString() + horLine.ToString() + horLine.ToString() + topRightCorner.ToString().PadRight(42)));
+                    Console.Write(topLeftCorner.ToString());
+                    for (int k = 0; k < 9; k++)
+                    {
+                        Console.Write(horLine.ToString() + horLine.ToString() + horLine.ToString() + topDiv.ToString());
+                    }
+                    Console.Write(horLine);
+                    Console.Write(horLine);
+                    Console.Write(horLine);
+                    Console.WriteLine(topRightCorner);
+                }
+                if (i % 2 == 0 && i > 1 && i < 21)
+                {
+                    Console.Write("".PadRight(13) + "  ");
+                    colorblue();
+                    Console.Write(letter);
+                    colorwhite();
+                    Console.Write(verLine.ToString());
+                    for (int k = 0; k < 10; k++)
+                    {
+                        switch (i)
+                        {
+                            case 2:
+                                x = 0;
+                                break;
+                            case 4:
+                                x = 1;
+                                break;
+                            case 6:
+                                x = 2;
+                                break;
+                            case 8:
+                                x = 3;
+                                break;
+                            case 10:
+                                x = 4;
+                                break;
+                            case 12:
+                                x = 5;
+                                break;
+                            case 14:
+                                x = 6;
+                                break;
+                            case 16:
+                                x = 7;
+                                break;
+                            case 18:
+                                x = 8;
+                                break;
+                            case 20:
+                                x = 9;
+                                break;
+                        }
+                        Console.Write(" ");
+                        switch (stringMap[x, k])
+                        {
+                            case null:
+                                Console.Write("  ");
+                                Console.Write(verLine.ToString());
+                                break;
+                            case "6":
+                                Console.Write("X ");
+                                Console.Write(verLine.ToString());
+                                break;
+                            case "2":
+                                Console.Write("S ");
+                                Console.Write(verLine.ToString());
+                                break;
+                            case "3":
+                                Console.Write("D ");
+                                Console.Write(verLine.ToString());
+                                break;
+                            case "4":
+                                Console.Write("C ");
+                                Console.Write(verLine.ToString());
+                                break;
+                            case "5":
+                                Console.Write("A ");
+                                Console.Write(verLine.ToString());
+                                break;
+                        }
+                    }
+                    Console.Write("".PadRight(40));
+                    colorblue();
+                    Console.Write(letter);
+                    colorwhite();
+                    Console.Write(verLine);
+                    for (int k = 0; k < 10; k++)
+                    {
+                        Console.Write(" ");
+                        switch (movesMap[x, k])
+                        {
+                            case null:
+                                Console.Write("  ");
+                                Console.Write(verLine);
+                                break;
+                            case "2":
+                                Console.Write("S ");
+                                Console.Write(verLine);
+                                break;
+                            case "3":
+                                Console.Write("D ");
+                                Console.Write(verLine);
+                                break;
+                            case "4":
+                                Console.Write("C ");
+                                Console.Write(verLine);
+                                break;
+                            case "5":
+                                Console.Write("A ");
+                                Console.Write(verLine);
+                                break;
+                            case "6":
+                                Console.Write("X ");
+                                Console.Write(verLine);
+                                break;
+                        }
+                    }
+                    counter++;
+                    Console.WriteLine();
+
+                }
+                if (i % 2 == 1 && i > 1 && i < 20)
+                {
+                    Console.Write("".PadRight(13) + "   " + leftDiv.ToString());
+                    for (int k = 0; k < 9; k++)
+                    {
+                        Console.Write(horLine.ToString() + horLine.ToString() + horLine.ToString() + middleDiv.ToString());
+                    }
+                    Console.Write((horLine.ToString() + horLine.ToString() + horLine.ToString() + rightDiv.ToString().PadRight(42)));
+                    Console.Write(leftDiv.ToString());
+                    for (int k = 0; k < 9; k++)
+                    {
+                        Console.Write(horLine.ToString() + horLine.ToString() + horLine.ToString() + rightDiv.ToString());
+                    }
+                    Console.Write(horLine);
+                    Console.Write(horLine);
+                    Console.Write(horLine);
+                    Console.WriteLine(rightDiv);
+                }
+                if (i == 21)
+                {
+                    Console.Write("".PadRight(13) + "   " + bottomLeftCorner.ToString());
+                    for (int k = 0; k < 9; k++)
+                    {
+                        Console.Write(horLine.ToString() + horLine.ToString() + horLine.ToString() + bottomDiv.ToString());
+                    }
+                    Console.Write((horLine.ToString() + horLine.ToString() + horLine.ToString() + bottomRightCorner.ToString().PadRight(42)));
+                    Console.Write(bottomLeftCorner.ToString());
+                    for (int k = 0; k < 9; k++)
+                    {
+                        Console.Write(horLine.ToString() + horLine.ToString() + horLine.ToString() + bottomDiv.ToString());
+                    }
+                    Console.Write(horLine);
+                    Console.Write(horLine);
+                    Console.Write(horLine);
+                    Console.WriteLine(bottomRightCorner);
                 }
             }
 
         }
-        static void showMap(ref int [,] map, ref int [,] movesMap)
+        static void hit(ref string[,] ship, ref int[] shipHealth, ref string[,] movesMap, int[] HP, int x, int y, int player)
         {
-            for (int i = 0; i <= 9; i++)
+            string directHit = @"
+██████╗ ██╗██████╗ ███████╗ ██████╗████████╗    ██╗  ██╗██╗████████╗
+██╔══██╗██║██╔══██╗██╔════╝██╔════╝╚══██╔══╝    ██║  ██║██║╚══██╔══╝
+██║  ██║██║██████╔╝█████╗  ██║        ██║       ███████║██║   ██║   
+██║  ██║██║██╔══██╗██╔══╝  ██║        ██║       ██╔══██║██║   ██║   
+██████╔╝██║██║  ██║███████╗╚██████╗   ██║       ██║  ██║██║   ██║   
+╚═════╝ ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝   ╚═╝       ╚═╝  ╚═╝╚═╝   ╚═╝   
+            ";
+            string miss = @"
+                                        ███╗   ███╗██╗███████╗███████╗██╗
+                                        ████╗ ████║██║██╔════╝██╔════╝██║
+                                        ██╔████╔██║██║███████╗███████╗██║
+                                        ██║╚██╔╝██║██║╚════██║╚════██║╚═╝
+                                        ██║ ╚═╝ ██║██║███████║███████║██╗
+                                        ╚═╝     ╚═╝╚═╝╚══════╝╚══════╝╚═╝
+                                                                         ";
+            string hit = @" 
+                                                    --_--
+                                                 (  -_    _).
+                                               ( ~       )   )
+                                             (( )  (    )  ()  )
+                                              (.   )) (       )
+                                                ``..     ..``
+                                                     | |
+                                                   (=| |=)
+                                                     | |         
+                                                 (../( )\.))";
+            string onSub = @" 
+ ██████╗ ███╗   ██╗    ███████╗██╗   ██╗██████╗ ██╗
+██╔═══██╗████╗  ██║    ██╔════╝██║   ██║██╔══██╗██║
+██║   ██║██╔██╗ ██║    ███████╗██║   ██║██████╔╝██║
+██║   ██║██║╚██╗██║    ╚════██║██║   ██║██╔══██╗╚═╝
+╚██████╔╝██║ ╚████║    ███████║╚██████╔╝██████╔╝██╗
+ ╚═════╝ ╚═╝  ╚═══╝    ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝";
+            string onDestroyer = @"
+ ██████╗ ███╗   ██╗    ██████╗ ███████╗███████╗████████╗██████╗  ██████╗ ██╗   ██╗███████╗██████╗ ██╗
+██╔═══██╗████╗  ██║    ██╔══██╗██╔════╝██╔════╝╚══██╔══╝██╔══██╗██╔═══██╗╚██╗ ██╔╝██╔════╝██╔══██╗██║
+██║   ██║██╔██╗ ██║    ██║  ██║█████╗  ███████╗   ██║   ██████╔╝██║   ██║ ╚████╔╝ █████╗  ██████╔╝██║
+██║   ██║██║╚██╗██║    ██║  ██║██╔══╝  ╚════██║   ██║   ██╔══██╗██║   ██║  ╚██╔╝  ██╔══╝  ██╔══██╗╚═╝
+╚██████╔╝██║ ╚████║    ██████╔╝███████╗███████║   ██║   ██║  ██║╚██████╔╝   ██║   ███████╗██║  ██║██╗
+ ╚═════╝ ╚═╝  ╚═══╝    ╚═════╝ ╚══════╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝
+                                                                                                     
+";
+            string onCruiser = @" 
+ ██████╗ ███╗   ██╗     ██████╗██████╗ ██╗   ██╗██╗███████╗███████╗██████╗ ██╗
+██╔═══██╗████╗  ██║    ██╔════╝██╔══██╗██║   ██║██║██╔════╝██╔════╝██╔══██╗██║
+██║   ██║██╔██╗ ██║    ██║     ██████╔╝██║   ██║██║███████╗█████╗  ██████╔╝██║
+██║   ██║██║╚██╗██║    ██║     ██╔══██╗██║   ██║██║╚════██║██╔══╝  ██╔══██╗╚═╝
+╚██████╔╝██║ ╚████║    ╚██████╗██║  ██║╚██████╔╝██║███████║███████╗██║  ██║██╗
+ ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝";
+            string onCarrier = @"
+ ██████╗ ███╗   ██╗     ██████╗ █████╗ ██████╗ ██████╗ ██╗███████╗██████╗ ██╗
+██╔═══██╗████╗  ██║    ██╔════╝██╔══██╗██╔══██╗██╔══██╗██║██╔════╝██╔══██╗██║
+██║   ██║██╔██╗ ██║    ██║     ███████║██████╔╝██████╔╝██║█████╗  ██████╔╝██║
+██║   ██║██║╚██╗██║    ██║     ██╔══██║██╔══██╗██╔══██╗██║██╔══╝  ██╔══██╗╚═╝
+╚██████╔╝██║ ╚████║    ╚██████╗██║  ██║██║  ██║██║  ██║██║███████╗██║  ██║██╗
+ ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝╚═╝  ╚═╝╚═╝";
+            string submarine = @"                                 o o
+                                                 o ooo
+                                                   o oo
+                                                      o o      |   #)
+                                                       oo     _|_|_#_
+                                                         o   | U505  |
+                    __                    ___________________|       |_________________
+                   |   -_______-----------                                              \
+                  >|    _____                                                   --->     )
+                   |__ -     ---------_________________________________________________ /";
+            string destroyer = @"
+                                     # #  ( )
+                                  ___#_#___|__
+                              _  |____________|  _
+                       _=====| | |            | | |==== _
+                 =====| |.---------------------------. | |====
+   <--------------------'   .  .  .  .  .  .  .  .   '--------------/
+     \                                                             /
+      \_______________________________________________WWS_________/
+";
+            string cruiser = @"    |__
+                                                    |\/
+                                                    ---
+                                                    / | [
+                                            !      | |||
+                                        _/|     _/|-++'
+                                    +  +--|    |--|--|_ |-
+                                    { /|__|  |/\__|  |--- |||__/
+                                +---------------___[}-_===_.'____               /\
+                            ____`-' ||___-{]_| _[}-  |     |_[___\==--          \/   _
+                __..._____--==/___]_|__|_____________________________[___\==--___,-----' .7
+            |                                                                   BB-61/
+                \_______________________________________________________________________|";
+            string aircraftCarrier = @"           
+                                                |
+                                               -+-
+                                             ---#---
+                                             __|_|__            __
+                                             \_____/           ||\________
+                               __   __   __  \_____/            ^---------^
+                              ||\__||\__||\__|___  | '-O-`
+                              -^---------^--^----^___.-------------.___.--------.___.------
+                              `-------------|-------------------------------|-------------' ";
+            Console.Clear();
+            if (ship[x, y] == null)
             {
-                Console.Write(map[0, i]);
+                colorred();
+                Console.Write(miss);
+                Console.Write(hit);
+                waves();
+                movesMap[x, y] = "6";
             }
-            Console.Write("    ");
-            for (int i = 0; i <= 9; i++)
+            else if (ship[x, y] != null)
             {
-                Console.Write(movesMap[0, i]);
+                switch (ship[x, y])
+                {
+                    case "2":
+                        colorred();
+                        Console.Write(directHit + onSub);
+                        waves();
+                        colorred();
+                        Console.Write(hit);
+                        colorgrey();
+                        Console.Write(submarine);
+                        movesMap[x, y] = "2";
+                        ship[x, y] = "6";
+                        if (player == 0)
+                        {
+                            shipHealth[4] = (shipHealth[4] - 1);
+                            HP[1] = (HP[1] - 1);
+                        }
+                        else if (player == 1)
+                        {
+                            shipHealth[0] = (shipHealth[0] - 1);
+                            HP[0] = (HP[0] - 1);
+                        }
+                        break;
+                    case "3":
+                        colorred();
+                        Console.WriteLine(directHit + onDestroyer);
+                        Console.Write(hit);
+                        colorgrey();
+                        Console.Write(destroyer);
+                        waves();
+                        movesMap[x, y] = "3";
+                        ship[x, y] = "6";
+                        if (player == 0)
+                        {
+                            shipHealth[5] = (shipHealth[5] - 1);
+                            HP[1] = (HP[1] - 1);
+                        }
+                        else if (player == 1)
+                        {
+                            shipHealth[1] = (shipHealth[1] - 1);
+                            HP[0] = (HP[0] - 1);
+                        }
+                        break;
+                    case "4":
+                        colorred();
+                        Console.WriteLine(directHit + onCruiser);
+                        Console.Write(hit);
+                        colorgrey();
+                        Console.Write(cruiser);
+                        waves();
+                        movesMap[x, y] = "4";
+                        ship[x, y] = "6";
+                        if (player == 0)
+                        {
+                            shipHealth[6] = (shipHealth[6] - 1);
+                            HP[1] = (HP[1] - 1);
+                        }
+                        else if (player == 1)
+                        {
+                            shipHealth[2] = (shipHealth[2] - 1);
+                            HP[0] = (HP[0] - 1);
+                        }
+                        break;
+                    case "5":
+                        colorred();
+                        Console.WriteLine(directHit + onCarrier);
+                        Console.Write(hit);
+                        colorgrey();
+                        Console.Write(aircraftCarrier);
+                        waves();
+                        movesMap[x, y] = "5";
+                        ship[x, y] = "6";
+                        if (player == 0)
+                        {
+                            shipHealth[7] = (shipHealth[7] - 1);
+                            HP[1] = (HP[1] - 1);
+                        }
+                        else if (player == 1)
+                        {
+                            shipHealth[3] = (shipHealth[3] - 1);
+                            HP[0] = (HP[0] - 1);
+                        }
+                        break;
+                    default:
+                        colorred();
+                        Console.Write(miss);
+                        Console.Write(hit);
+                        colorblue();
+                        waves();
+                        break;
+                }
             }
-            Console.WriteLine();
-            for (int i = 0; i <= 9; i++)
+            Console.ReadKey();
+        }
+        static void cpuMoveProc(ref int[] cpuMove, ref string[,] cpuMovesMap)
+        {
+            Random rand = new Random();
+            do
             {
-                Console.Write(map[1, i]);
-            }
-            Console.Write("    ");
-            for (int i = 0; i <= 9; i++)
+                cpuMove[0] = rand.Next(0, 10);
+                cpuMove[1] = rand.Next(0, 10);
+            } while (cpuMovesMap[cpuMove[0], cpuMove[1]] != null);
+        }
+        static void fillLeaderboard(int[] HP)
+        {
+            title();
+            colorwhite();
+            Console.Write("\n\nInsert your name:");
+            string userID = Console.ReadLine();
+            string nomeFicheiro = "Leaderboard.txt";
+            StreamReader leaderboardFileRead = new StreamReader(nomeFicheiro);
+            StreamWriter leaderboardFileWrite = new StreamWriter(nomeFicheiro);
+            string linha;
+            linha = leaderboardFileRead.ReadLine();
+            if (linha == null)
             {
-                Console.Write(movesMap[1, i]);
+                leaderboardFileWrite.WriteLine("Name;EnemyHP;");
+                leaderboardFileWrite.Write(userID + ";" + HP[1]);
+                leaderboardFileWrite.Close();
             }
-            Console.WriteLine();
-            for (int i = 0; i <= 9; i++)
+            else if (linha == "Name;EnemyHP;")
             {
-                Console.Write(map[2, i]);
+                while (!leaderboardFileRead.EndOfStream)
+                {
+                    linha = leaderboardFileRead.ReadLine();
+                }
+                leaderboardFileWrite.Write(userID + ";" + HP[1]);
+                leaderboardFileWrite.Close();
             }
-            Console.Write("    ");
-            for (int i = 0; i <= 9; i++)
+
+        }
+        static void saveGame(ref string[,] cpuString, ref string[,] userString, ref string [,] cpuMovesMap , ref string [,] userMovesMap)
+        {
+            title();
+            colorwhite();
+            Console.Write("\n\nInsert your savename: ");
+            string saveName = Console.ReadLine();
+            string fileName = saveName + ".txt";
+            StreamWriter saveGame = new StreamWriter(fileName);
+            for (int i = 0; i < 10; i++)
             {
-                Console.Write(movesMap[2, i]);
+                for (int k = 0; k < 10; k++)
+                {
+                    if (cpuString[i,k] == null)
+                    {
+                        saveGame.Write("0");
+                    }
+                    else if (cpuString[i, k] != null)
+                    {
+                        saveGame.Write(cpuString[i, k]);
+                    }
+                    saveGame.Write(";");
+                    if (cpuMovesMap[i, k] == null)
+                    {
+                        saveGame.Write("0");
+                    }
+                    else if (cpuMovesMap[i, k] != null)
+                    {
+                        saveGame.Write(cpuMovesMap[i, k]);
+                    }
+                    saveGame.Write(";");
+                    if (userMovesMap[i, k] == null)
+                    {
+                        saveGame.Write("0");
+                    }
+                    else if (userMovesMap[i, k] != null)
+                    {
+                        saveGame.Write(userMovesMap[i, k]);
+                    }
+                    saveGame.Write(";");
+                    if (userString[i,k] == null)
+                    {
+                        if (k ==9)
+                        {
+                            saveGame.WriteLine("0");
+                        }
+                        else if (k < 9)
+                        {
+                            saveGame.Write("0");
+                            saveGame.Write(";");
+                        }
+                    }
+                    else if (userString[i,k] != null)
+                    {
+                        if (k ==9)
+                        {
+                            saveGame.WriteLine(userString[i, k]);
+                        }
+                        else if (k<9)
+                        {
+                            saveGame.Write(userString[i, k]);
+                            saveGame.Write(";");
+                        }
+                        
+                    }
+                }
             }
-            Console.WriteLine();
-            for (int i = 0; i <= 9; i++)
+            saveGame.Close();
+        }
+        static void loadGame(ref string[,] cpuString, ref string[,] userString, ref string[,] cpuMovesMap, ref string[,] userMovesMap)
+        {
+            title();
+            colorwhite();
+            Console.Write("\n\nInsert your savename");
+            string saveName = Console.ReadLine();
+            string filename = saveName + ".txt";
+            StreamReader saveGame = new StreamReader(filename);
+            int cpu = 0;
+            int cpuMove = 1;
+            int userMove = 2;
+            int user = 3;
+            string linha;
+            while (!saveGame.EndOfStream)
             {
-                Console.Write(map[3, i]);
+                for (int i = 0; i < 10; i++)
+                {
+                    linha = saveGame.ReadLine();
+                    string[] palavras = linha.Split(";");
+                    for (int k = 0; k < 10; k++)
+                    {
+                        if (palavras[cpu] == "0")
+                        {
+                            cpuString[i, k] = null;
+                        }
+                        else if (palavras[cpu] != "0")
+                        {
+                            cpuString[i, k] = palavras[cpu];
+                        }
+                        if (palavras[cpuMove] == "0")
+                        {
+                            cpuMovesMap[i, k] = null;
+                        }
+                        else if (palavras[cpuMove] != "0")
+                        {
+                            cpuMovesMap[i, k] = palavras[cpuMove];
+                        }
+                        if (palavras[userMove] == "0")
+                        {
+                            userMovesMap[i, k] = null;
+                        }
+                        else if (palavras[userMove] != "0")
+                        {
+                            userMovesMap[i, k] = palavras[userMove];
+                        }
+                        if (palavras[user] == "0")
+                        {
+                            userString[i, k] = null;
+                        }
+                        else if (palavras[user] != "0")
+                        {
+                            userString[i, k] = palavras[user];
+                        }
+                        cpu = cpu +4;
+                        cpuMove = cpuMove + 4;
+                        userMove = userMove +4;
+                        user = user+4;
+                    }
+                    cpu = 0;
+                    cpuMove = 1;
+                    userMove = 2;
+                    user = 3;
+                }
             }
-            Console.Write("    ");
-            for (int i = 0; i <= 9; i++)
-            {
-                Console.Write(movesMap[3, i]);
-            }
-            Console.WriteLine();
-            for (int i = 0; i <= 9; i++)
-            {
-                Console.Write(map[4, i]);
-            }
-            Console.Write("    ");
-            for (int i = 0; i <= 9; i++)
-            {
-                Console.Write(movesMap[4, i]);
-            }
-            Console.WriteLine();
-            for (int i = 0; i <= 9; i++)
-            {
-                Console.Write(map[5, i]);
-            }
-            Console.Write("    ");
-            for (int i = 0; i <= 9; i++)
-            {
-                Console.Write(movesMap[5, i]);
-            }
-            Console.WriteLine();
-            for (int i = 0; i <= 9; i++)
-            {
-                Console.Write(map[6, i]);
-            }
-            Console.Write("    ");
-            for (int i = 0; i <= 9; i++)
-            {
-                Console.Write(movesMap[6, i]);
-            }
-            Console.WriteLine();
-            for (int i = 0; i <= 9; i++)
-            {
-                Console.Write(map[7, i]);
-            }
-            Console.Write("    ");
-            for (int i = 0; i <= 9; i++)
-            {
-                Console.Write(movesMap[7, i]);
-            }
-            Console.WriteLine();
-            for (int i = 0; i <= 9; i++)
-            {
-                Console.Write(map[8, i]);
-            }
-            Console.Write("    ");
-            for (int i = 0; i <= 9; i++)
-            {
-                Console.Write(movesMap[8, i]);
-            }
-            Console.WriteLine();
-            for (int i = 0; i <= 9; i++)
-            {
-                Console.Write(map[9, i]);
-            }
-            Console.Write("    ");
-            for (int i = 0; i <= 9; i++)
-            {
-                Console.Write(movesMap[9, i]);
-            }
-            Console.WriteLine();
+            saveGame.Close();
+            Console.WriteLine("\n\n SaveGame Loaded! Press Any Key to Continue.");
+
         }
     }
+
 }
+
+
+//static void newGame()
+//{
+//    //Atribuição de Valores aos Navios do Computador (Porta Aviões - 5 Posições) (Cruzador - 4 Posições) (Contratorpedo - 3 Posições) (Submarino - 2 Posições)
+//    string[,] userMovesMap = new string[10, 10];
+//    string[,] cpuMovesMap = new string[10, 10];
+//    int[] shipHealth = new int[8];
+//    int[] cpuMove = new int[2];
+//    int[] HP = new int[2];
+//    //user HP
+//    HP[0] = 0;
+//    //CPU HP
+//    HP[1] = 0;
+//    string[,] cpuShips = new string[10, 10];
+//    string[,] userShips = new string[10, 10];
+//    string userMove = "";
+//    string wrongCoordinates = @"
+//██╗███╗   ██╗ ██████╗ ██████╗ ██████╗ ██████╗ ███████╗ ██████╗████████╗    ███╗   ███╗ ██████╗ ██╗   ██╗███████╗██╗
+//██║████╗  ██║██╔════╝██╔═══██╗██╔══██╗██╔══██╗██╔════╝██╔════╝╚══██╔══╝    ████╗ ████║██╔═══██╗██║   ██║██╔════╝██║
+//██║██╔██╗ ██║██║     ██║   ██║██████╔╝██████╔╝█████╗  ██║        ██║       ██╔████╔██║██║   ██║██║   ██║█████╗  ██║
+//██║██║╚██╗██║██║     ██║   ██║██╔══██╗██╔══██╗██╔══╝  ██║        ██║       ██║╚██╔╝██║██║   ██║╚██╗ ██╔╝██╔══╝  ╚═╝
+//██║██║ ╚████║╚██████╗╚██████╔╝██║  ██║██║  ██║███████╗╚██████╗   ██║       ██║ ╚═╝ ██║╚██████╔╝ ╚████╔╝ ███████╗██╗
+//╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝   ╚═╝       ╚═╝     ╚═╝ ╚═════╝   ╚═══╝  ╚══════╝╚═╝
+                                                                                                                   
+//████████╗██████╗ ██╗   ██╗     █████╗  ██████╗  █████╗ ██╗███╗   ██╗██╗                                            
+//╚══██╔══╝██╔══██╗╚██╗ ██╔╝    ██╔══██╗██╔════╝ ██╔══██╗██║████╗  ██║██║                                            
+//   ██║   ██████╔╝ ╚████╔╝     ███████║██║  ███╗███████║██║██╔██╗ ██║██║                                            
+//   ██║   ██╔══██╗  ╚██╔╝      ██╔══██║██║   ██║██╔══██║██║██║╚██╗██║╚═╝                                            
+//   ██║   ██║  ██║   ██║       ██║  ██║╚██████╔╝██║  ██║██║██║ ╚████║██╗                                            
+//   ╚═╝   ╚═╝  ╚═╝   ╚═╝       ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚═╝                                            
+                                                                                                                   
+//";
+//    title();
+//    colorwhite();
+//    Console.WriteLine("\n\nStarting Game...\n");
+//    for (int i = 5; i >= 2; i--)
+//    {
+//        fillMap(i, ref cpuShips);
+//        fillMap(i, ref userShips);
+//    }
+//    for (int i = 0; i < 10; i++)
+//    {
+//        for (int j = 0; j < 10; j++)
+//        {
+//            switch (userShips[i, j])
+//            {
+//                case "2":
+//                    shipHealth[0] = (shipHealth[0] + 1);
+//                    HP[0] = (HP[0] + 1);
+//                    break;
+//                case "3":
+//                    shipHealth[1] = (shipHealth[1] + 1);
+//                    HP[0] = (HP[0] + 1);
+//                    break;
+//                case "4":
+//                    shipHealth[2] = (shipHealth[2] + 1);
+//                    HP[0] = (HP[0] + 1);
+//                    break;
+//                case "5":
+//                    shipHealth[3] = (shipHealth[3] + 1);
+//                    HP[0] = (HP[0] + 1);
+//                    break;
+//            }
+//        }
+//        for (int j = 0; j < 10; j++)
+//        {
+//            switch (cpuShips[i, j])
+//            {
+//                case "2":
+//                    shipHealth[4] = (shipHealth[4] + 1);
+//                    HP[1] = (HP[1] + 1);
+//                    break;
+//                case "3":
+//                    shipHealth[5] = (shipHealth[5] + 1);
+//                    HP[1] = (HP[1] + 1);
+//                    break;
+//                case "4":
+//                    shipHealth[6] = (shipHealth[6] + 1);
+//                    HP[1] = (HP[1] + 1);
+//                    break;
+//                case "5":
+//                    shipHealth[7] = (shipHealth[7] + 1);
+//                    HP[1] = (HP[1] + 1);
+//                    break;
+//            }
+//        }
+//    }
+//    Console.WriteLine("Your Ships are Displayed on the Left. On the right side your moves are displayed.");
+//    Console.WriteLine("\nPress Ok to Continue\n\n\n\n");
+//    waves();
+//    Console.ReadLine();
+//    int x = 0, y = 0;
+//    while (userMove == "" && HP[0] != 0 && HP[1] != 0 && userMove != "EXIT")
+//    {
+//        Console.Clear();
+//        title();
+//        gameStats(ref userShips, ref userMovesMap, shipHealth);
+//        colorwhite();
+//        Console.WriteLine("\nWhat's your move?");
+//        userMove = Console.ReadLine();
+//        if (userMove == "USERWIN")
+//        {
+//            title();
+//            colorwhite();
+//            Console.Write("Cheat Codes will lose all Progress and Won't feature the Leaderboard. Do you want to continue?");
+//            userMove = Console.ReadLine();
+//            if (userMove == "YES")
+//            {
+//                userMove = "EXIT";
+//                HP[1] = 0;
+//                Console.Clear();
+//                continue;
+//            }
+//            else if (userMove == "NO")
+//            {
+//                continue;
+//            }
+//        }
+//        if (userMove == "CPUWIN")
+//        {
+//            title();
+//            colorwhite();
+//            Console.Write("Cheat Codes will lose all Progress and Won't feature the Leaderboard. Do you want to continue?");
+//            userMove = Console.ReadLine();
+//            if (userMove == "YES")
+//            {
+//                HP[0] = 0;
+//                userMove = "EXIT";
+//                Console.Clear();
+//                continue;
+//            }
+//            else if (userMove == "NO")
+//            {
+//                continue;
+//            }
+//        }
+//        if (userMove == "EXIT" || userMove == "exit")
+//        {
+//            title();
+//            colorwhite();
+//            Console.Write("Quitting the Game at this stage will lose all Progress. Do you want to continue?");
+//            userMove = Console.ReadLine();
+//            if (userMove == "YES")
+//            {
+//                userMove = "EXIT";
+//                continue;
+//            }
+//            else if (userMove == "NO")
+//            {
+//                userMove = "";
+//                continue;
+//            }
+//        }
+//        else if (userMove != "EXIT " && HP[0] != 0 && HP[1] != 0)
+//        {
+//            switch (userMove)
+//            {
+
+//                case "A":
+//                    x = 0;
+//                    break;
+//                case "B":
+//                    x = 1;
+//                    break;
+//                case "C":
+//                    x = 2;
+//                    break;
+//                case "D":
+//                    x = 3;
+//                    break;
+//                case "E":
+//                    x = 4;
+//                    break;
+//                case "F":
+//                    x = 5;
+//                    break;
+//                case "G":
+//                    x = 6;
+//                    break;
+//                case "H":
+//                    x = 7;
+//                    break;
+//                case "I":
+//                    x = 8;
+//                    break;
+//                case "J":
+//                    x = 9;
+//                    break;
+//                case "EXIT":
+//                    continue;
+//                default:
+//                    userMove = "";
+//                    colorred();
+//                    Console.Clear();
+//                    Console.WriteLine(wrongCoordinates);
+//                    Console.ReadKey();
+//                    continue;
+//            }
+//            userMove = Console.ReadLine();
+//            switch (userMove)
+//            {
+//                case "1":
+//                    y = 0;
+//                    userMove = "";
+//                    break;
+//                case "2":
+//                    y = 1;
+//                    userMove = "";
+//                    break;
+//                case "3":
+//                    y = 2;
+//                    userMove = "";
+//                    break;
+//                case "4":
+//                    y = 3;
+//                    userMove = "";
+//                    break;
+//                case "5":
+//                    y = 4;
+//                    userMove = "";
+//                    break;
+//                case "6":
+//                    y = 5;
+//                    userMove = "";
+//                    break;
+//                case "7":
+//                    y = 6;
+//                    userMove = "";
+//                    break;
+//                case "8":
+//                    y = 7;
+//                    userMove = "";
+//                    break;
+//                case "9":
+//                    y = 8;
+//                    userMove = "";
+//                    break;
+//                case "10":
+//                    y = 9;
+//                    userMove = "";
+//                    break;
+//                case "EXIT":
+//                    continue;
+//                default:
+//                    userMove = "";
+//                    colorred();
+//                    Console.Clear();
+//                    Console.WriteLine(wrongCoordinates);
+//                    Console.ReadKey();
+//                    continue;
+//            }
+//            hit(ref cpuShips, ref shipHealth, ref userMovesMap, HP, x, y, 0);
+//            title();
+//            colorwhite();
+//            Console.WriteLine("Computer's turn! Press Enter to Continue");
+//            Console.ReadLine();
+//            cpuMoveProc(ref cpuMove, ref cpuMovesMap);
+//            hit(ref userShips, ref shipHealth, ref cpuMovesMap, HP, cpuMove[0], cpuMove[1], 1);
+//        }
+//    }
+//    if (HP[0] == 0)
+//    {
+//        string cpuWin = @"
+//                                ▓█████  ███▄    █ ▓█████  ███▄ ▄███▓▓██   ██▓    █     █░ ██▓ ███▄    █   ██████  ▐██▌ 
+//                                ▓█   ▀  ██ ▀█   █ ▓█   ▀ ▓██▒▀█▀ ██▒ ▒██  ██▒   ▓█░ █ ░█░▓██▒ ██ ▀█   █ ▒██    ▒  ▐██▌ 
+//                                ▒███   ▓██  ▀█ ██▒▒███   ▓██    ▓██░  ▒██ ██░   ▒█░ █ ░█ ▒██▒▓██  ▀█ ██▒░ ▓██▄    ▐██▌ 
+//                                ▒▓█  ▄ ▓██▒  ▐▌██▒▒▓█  ▄ ▒██    ▒██   ░ ▐██▓░   ░█░ █ ░█ ░██░▓██▒  ▐▌██▒  ▒   ██▒ ▓██▒ 
+//                                ░▒████▒▒██░   ▓██░░▒████▒▒██▒   ░██▒  ░ ██▒▓░   ░░██▒██▓ ░██░▒██░   ▓██░▒██████▒▒ ▒▄▄  
+//                                ░░ ▒░ ░░ ▒░   ▒ ▒ ░░ ▒░ ░░ ▒░   ░  ░   ██▒▒▒    ░ ▓░▒ ▒  ░▓  ░ ▒░   ▒ ▒ ▒ ▒▓▒ ▒ ░ ░▀▀▒ 
+//                                 ░ ░  ░░ ░░   ░ ▒░ ░ ░  ░░  ░      ░ ▓██ ░▒░      ▒ ░ ░   ▒ ░░ ░░   ░ ▒░░ ░▒  ░ ░ ░  ░ 
+//                                   ░      ░   ░ ░    ░   ░      ░    ▒ ▒ ░░       ░   ░   ▒ ░   ░   ░ ░ ░  ░  ░      ░ 
+//                                   ░  ░         ░    ░  ░       ░    ░ ░            ░     ░           ░       ░   ░    
+//                                     ░ ░                                               
+//                                                                        ,-.
+//                                                   ___,---.__          /'|`\          __,---,___
+//                                                ,-'    \`    `-.____,-'  |  `-.____,-'    //    `-.
+//                                              ,'        |           ~'\     /`~           |        `.
+//                                             /      ___//              `. ,'          ,  , \___      \
+//                                            |    ,-'   `-.__   _         |        ,    __,-'   `-.    |
+//                                            |   /          /\_  `   .    |    ,      _/\          \   |
+//                                            \  |           \ \`-.___ \   |   / ___,-'/ /           |  /
+//                                             \  \           | `._   `\\  |  //'   _,' |           /  /
+//                                              `-.\         /'  _ `---'' , . ``---' _  `\         /,-'
+//                                                 ``       /     \    ,='/ \`=.    /     \       ''
+//                                                         |__   /|\_,--.,-.--,--._/|\   __|
+//                                                         /  `./  \\`\ |  |  | /,//' \,'  \
+//                                                        /   /     ||--+--|--+-/-|     \   \
+//                                                       |   |     /'\_\_\ | /_/_/`\     |   |
+//                                                        \   \__, \_     `~'     _/ .__/   /
+//                                                         `-._,-'   `-._______,-'   `-._,-'
+//";
+//        string tryAgain = @"
+//                                ▄▄▄█████▓ ██▀███ ▓██   ██▓    ▄▄▄        ▄████  ▄▄▄       ██▓ ███▄    █  ▐██▌ 
+//                                ▓  ██▒ ▓▒▓██ ▒ ██▒▒██  ██▒   ▒████▄     ██▒ ▀█▒▒████▄    ▓██▒ ██ ▀█   █  ▐██▌ 
+//                                ▒ ▓██░ ▒░▓██ ░▄█ ▒ ▒██ ██░   ▒██  ▀█▄  ▒██░▄▄▄░▒██  ▀█▄  ▒██▒▓██  ▀█ ██▒ ▐██▌ 
+//                                ░ ▓██▓ ░ ▒██▀▀█▄   ░ ▐██▓░   ░██▄▄▄▄██ ░▓█  ██▓░██▄▄▄▄██ ░██░▓██▒  ▐▌██▒ ▓██▒ 
+//                                  ▒██▒ ░ ░██▓ ▒██▒ ░ ██▒▓░    ▓█   ▓██▒░▒▓███▀▒ ▓█   ▓██▒░██░▒██░   ▓██░ ▒▄▄  
+//                                  ▒ ░░   ░ ▒▓ ░▒▓░  ██▒▒▒     ▒▒   ▓▒█░ ░▒   ▒  ▒▒   ▓▒█░░▓  ░ ▒░   ▒ ▒  ░▀▀▒ 
+//                                  ░      ░▒ ░ ▒░▓██ ░▒░      ▒   ▒▒ ░  ░   ░   ▒   ▒▒ ░ ▒ ░░ ░░   ░ ▒░ ░  ░ 
+//                                  ░        ░░   ░ ▒ ▒ ░░       ░   ▒   ░ ░   ░   ░   ▒    ▒ ░   ░   ░ ░     ░ 
+//                                          ░     ░ ░              ░  ░      ░       ░  ░ ░           ░  
+//                                                   ░ ░                                                    
+//";
+//        colorred();
+//        Console.Write(cpuWin);
+//        Console.Write(tryAgain);
+//        colorwhite();
+//        Console.Write("Press Any Key to Continue");
+//        Console.ReadKey();
+//    }
+//    else if (HP[1] == 0)
+//    {
+
+//        string victory = @"     
+
+
+//                                                    ██╗   ██╗██╗ ██████╗████████╗ ██████╗ ██████╗ ██╗   ██╗██╗
+//                                                    ██║   ██║██║██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝██║
+//                                                    ██║   ██║██║██║        ██║   ██║   ██║██████╔╝ ╚████╔╝ ██║
+//                                                    ╚██╗ ██╔╝██║██║        ██║   ██║   ██║██╔══██╗  ╚██╔╝  ╚═╝
+//                                                     ╚████╔╝ ██║╚██████╗   ██║   ╚██████╔╝██║  ██║   ██║   ██╗
+//                                                      ╚═══╝  ╚═╝ ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝";
+//        string buildings = @"               
+//              . .                     -:-             .  .  ..                          . .                     -:-             .  .  ..                          . .                     -:-             .  .  ..            
+//            .'.:,'.        .  .  .     ' .           . \ | / .                        .'.:,'.        .  .  .     ' .           . \ | / .                        .'.:,'.        .  .  .     ' .           . \ | / .            
+//            .'.;.`.       ._. ! ._.       \          .__\:/__.                        .'.;.`.       ._. ! ._.       \          .__\:/__.                        .'.;.`.       ._. ! ._.       \          .__\:/__.            
+//             `,:.'         ._\!/_.                     .';`.      . ' .                `,:.'         ._\!/_.                     .';`.      . ' .                `,:.'         ._\!/_.                     .';`.      . ' .   
+//             ,'             . ! .        ,.,      ..======..       .:.                 ,'             . ! .        ,.,      ..======..       .:.                 ,'             . ! .        ,.,      ..======..       .:.    
+//            ,                 .         ._!_.     ||::: : | .        ',               ,                 .         ._!_.     ||::: : | .        ',               ,                 .         ._!_.     ||::: : | .        ',   
+//     .====.,                  .           ;  .~.===: : : :|   ..===.           .====.,                  .           ;  .~.===: : : :|   ..===.           .====.,                  .           ;  .~.===: : : :|   ..===.      
+//     |.::'||      .=====.,    ..=======.~,   | |: :|::::::|   ||:::|=====|     |.::'||      .=====.,    ..=======.~,   | |: :|::::::|   ||:::|=====|     |.::'||      .=====.,    ..=======.~,   | |: :|::::::|   ||:::|=====|
+//  ___| :::|!__.,  |:::::|!_,   |: :: ::|'|l_l| |:: |:;;:::|___!| ::|: : :|  ___| :::|!__.,  |:::::|!_,   |: :: ::|'|l_l| |:: |:;;:::|___!| ::|: : :|  ___| :::|!__.,  |:::::|!_,   |: :: ::|'|l_l| |:: |:;;:::|___!| ::|: : :|
+// |: :|::: |:: |!__|; :: |: |===::: :: :|'||_|| | : |: :: :|: : |:: |:::::| |: :|::: |:: |!__|; :: |: |===::: :: :|'||_|| | : |: :: :|: : |:: |:::::| |: :|::: |:: |!__|; :: |: |===::: :: :|'||_|| | : |: :: :|: : |:: |:::::|
+// |:::| _::|: :|:::|:===:|::|:::|:===F=:|'!/|\! |::F|:====:|::_:|: :|::__:| |:::| _::|: :|:::|:===:|::|:::|:===F=:|'!/|\! |::F|:====:|::_:|: :|::__:| |:::| _::|: :|:::|:===:|::|:::|:===F=:|'!/|\! |::F|:====:|::_:|: :|::__:|
+// !_[]![_]_!_[]![]_!_[__]![]![_]![_][I_]!//_:_\\![]I![_][_]!_[_]![]_!_[__]!!_[]![_]_!_[]![]_!_[__]![]![_]![_][I_]!//_:_\\![]I![_][_]!_[_]![]_!_[__]!!_[]![_]_!_[]![]_!_[_;
+// ";
+//        Console.ForegroundColor = ConsoleColor.DarkGreen;
+//        Console.WriteLine(victory);
+//        colorgrey();
+//        Console.WriteLine(buildings);
+//        string ship = @"
+//                          |__
+//                                                    |\/                                                         _)`'-.,_)`'-.,_                               _)`'-.,_)`'-.,_
+//       _)`'-.,_)`'-.,__)`'-.,_)`'-.,__)`'-.,_)`'-.,_                                             ---
+//                                                    / | [
+//                                            !      | |||                                      _)`'-.,_)`'-.,_                         _)`'-.,_)`'-.,_
+//                                        _/|     _/|-++'                                                   _)`'-.,_)`'-.,_                                               _)`'-.,_)`'-.,_
+//                                    +  +--|    |--|--|_ |-
+//                                    { /|__|  |/\__|  |--- |||__/
+//     _)`'-.,_)`'-.,_                           +---------------___[}-_===_.'____               /\            _)`'-.,_)`'-.,_                                                                      _)`'-.,_)`'-.,_
+//                            ____`-' ||___-{]_| _[}-  |     |_[___\==--          \/   _
+//                __..._____--==/___]_|__|_____________________________[___\==--___,-----' .7                            _)`'-.,_)`'-.,__)`'-.,_)`'-.,__)`'-.,_)`'-.,_
+//            |                                                                   BB-61/
+//                \_______________________________________________________________________|             _)`'-.,_)`'-.,_                                   _)`'-.,_)`'-.,_                              _)`'-.,_)`'-.,_
+//                                                                                                                                    )___(
+//                                                                                                                             _______/__/_
+//                                                                                 _)`'-.,_)`'-.,_                                   ___     /===========|   ___
+//  _)`'-.,_)`'-.,_                                                                                                 ____       __   [\\\]___/____________|__[///]   __
+//                                                                                                   \   \_____[\\]__/___________________________\__[//]_____
+//                                                         _)`'-.,_)`'-.,_                                           \40A                                                   |
+//                                                                                                     \____________________________________________________/                                             _)`'-.,_)`'-.,_                                                              ";
+//        Console.WriteLine(ship);
+//        waves();
+//        waves();
+//        Console.ReadKey();
+//    }
+
+
+//}
+//static int stats (ref string [,] shipPos, int [] shipHealth, int [] userShips)
+//{
+
+//}
+
+
+
 
 
 
